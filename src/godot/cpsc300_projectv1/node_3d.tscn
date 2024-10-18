@@ -1,3 +1,30 @@
-[gd_scene format=3 uid="uid://fusk267e0y4n"]
+[gd_scene load_steps=5 format=3 uid="uid://fusk267e0y4n"]
+
+[ext_resource type="Script" path="res://mesh_instance_3d.gd" id="1_qhd5m"]
+
+[sub_resource type="Sky" id="Sky_w8lpb"]
+
+[sub_resource type="Environment" id="Environment_w77f7"]
+background_mode = 1
+background_color = Color(0.59193, 0.196095, 0.321536, 1)
+background_energy_multiplier = 0.37
+sky = SubResource("Sky_w8lpb")
+ambient_light_color = Color(0.0177324, 0.0177324, 0.0177324, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tqogd"]
 
 [node name="Node3D" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.985891, 0.160423, 0.0477845, -0.167388, 0.944866, 0.281443, 0, -0.285471, 0.958387, 0.0937687, 1.22906, 2.86527)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_w77f7")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.723806, -0.17229, 0.668147, 0.502753, 0.531535, 0.681696, -0.472593, 0.829329, -0.298109, 2.80907, 2.39115, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0213962, 0, 0)
+mesh = SubResource("BoxMesh_tqogd")
+script = ExtResource("1_qhd5m")
