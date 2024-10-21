@@ -21,29 +21,65 @@ offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="Menu_Vertical" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Dimensions" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Dimensions" type="Label" parent="MarginContainer/Menu_Vertical"]
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 4
 text = "Dimensions
 "
 
-[node name="MenuButton" type="MenuButton" parent="MarginContainer/VBoxContainer/Dimensions"]
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-
-[node name="Objects" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Room Dimensions" type="HBoxContainer" parent="MarginContainer/Menu_Vertical"]
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 4
+
+[node name="room x" type="LineEdit" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
+layout_mode = 2
+
+[node name="room_by" type="Label" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
+layout_mode = 2
+text = "x"
+
+[node name="room y" type="LineEdit" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
+layout_mode = 2
+
+[node name="Objects" type="Label" parent="MarginContainer/Menu_Vertical"]
+layout_mode = 2
+size_flags_horizontal = 4
 text = "Objects
 "
 
-[node name="Generate" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/Menu_Vertical"]
 layout_mode = 2
-size_flags_horizontal = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Menu_Vertical"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="objectx" type="LineEdit" parent="MarginContainer/Menu_Vertical/HBoxContainer"]
+layout_mode = 2
+
+[node name="objectby1" type="Label" parent="MarginContainer/Menu_Vertical/HBoxContainer"]
+layout_mode = 2
+text = "x"
+
+[node name="objecty" type="LineEdit" parent="MarginContainer/Menu_Vertical/HBoxContainer"]
+layout_mode = 2
+
+[node name="objectby2" type="Label" parent="MarginContainer/Menu_Vertical/HBoxContainer"]
+layout_mode = 2
+text = "x"
+
+[node name="objectz" type="LineEdit" parent="MarginContainer/Menu_Vertical/HBoxContainer"]
+layout_mode = 2
+
+[node name="ItemList" type="ItemList" parent="MarginContainer/Menu_Vertical"]
+layout_mode = 2
+
+[node name="Generate" type="Button" parent="MarginContainer/Menu_Vertical"]
+layout_mode = 2
+size_flags_horizontal = 4
 text = "Generate"

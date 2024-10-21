@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="CPSC300_projectV1"
+run/main_scene="res://ui.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
+
+[display]
+
+window/stretch/mode="canvas_items"
 
 [dotnet]
 
