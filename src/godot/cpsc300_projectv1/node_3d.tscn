@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://fusk267e0y4n"]
+[gd_scene load_steps=10 format=3 uid="uid://fusk267e0y4n"]
 
 [ext_resource type="Texture2D" uid="uid://to7qw07aq6m6" path="res://textures/brick_pavement_02_diff_4k.png" id="1_cavpp"]
+[ext_resource type="Script" path="res://camera_3d.gd" id="1_d245i"]
 [ext_resource type="Texture2D" uid="uid://136hvoufc0cw" path="res://textures/brick_pavement_02_ao_4k.png" id="2_q0mbr"]
 [ext_resource type="Texture2D" uid="uid://bn2jhdev36aba" path="res://textures/brick_pavement_02_nor_gl_4k.png" id="3_rryr0"]
 [ext_resource type="Texture2D" uid="uid://drxp3b11bac0p" path="res://textures/brick_pavement_02_rough_4k.png" id="4_0xlkt"]
@@ -30,6 +31,7 @@ volumetric_fog_density = 0.0184
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(0.999945, 0.0100693, 0.0029993, -0.0105065, 0.958335, 0.285455, -7.34546e-09, -0.285471, 0.958387, 0.146625, 3.34258, 7.69795)
 fov = 90.0
+script = ExtResource("1_d245i")
 
 [node name="Light" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.632831, -0.128842, 0.763496, 0.604243, -0.69876, 0.382915, 0.484165, 0.703657, 0.520049, 1.81389, 3.85554, 0.417552)
