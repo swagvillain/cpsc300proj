@@ -1,0 +1,53 @@
+[gd_scene load_steps=11 format=3 uid="uid://do31exq1anrp4"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_bumc7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0wvj0"]
+albedo_color = Color(0.2, 0.083, 0.02, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xa2nl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ifcf8"]
+albedo_color = Color(0.321577, 0.297069, 0.568692, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fa131"]
+size = Vector3(3, 1, 5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5s48m"]
+albedo_color = Color(0.724643, 0.724643, 0.724643, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ucyp1"]
+size = Vector3(4, 1.5, 1.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r3ex1"]
+albedo_color = Color(0.19, 0.12331, 0.0418, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_djtlp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_80a00"]
+albedo_color = Color(0.948825, 9.76092e-05, 0.747186, 1)
+
+[node name="MeshLibrarySource" type="Node3D"]
+
+[node name="floorTile" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.00106468, 0.999999, 0, -0.999999, -0.00106468, -4.13574, 0, 0)
+mesh = SubResource("BoxMesh_bumc7")
+surface_material_override/0 = SubResource("StandardMaterial3D_0wvj0")
+
+[node name="wallTile" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.59078, 0, 0)
+mesh = SubResource("BoxMesh_xa2nl")
+surface_material_override/0 = SubResource("StandardMaterial3D_ifcf8")
+
+[node name="bed" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.75129)
+mesh = SubResource("BoxMesh_fa131")
+surface_material_override/0 = SubResource("StandardMaterial3D_5s48m")
+
+[node name="desk" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_ucyp1")
+surface_material_override/0 = SubResource("StandardMaterial3D_r3ex1")
+
+[node name="chair" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_djtlp")
+surface_material_override/0 = SubResource("StandardMaterial3D_80a00")
