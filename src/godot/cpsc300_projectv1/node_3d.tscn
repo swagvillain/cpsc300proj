@@ -32,7 +32,7 @@ transform = Transform3D(0.999945, 0.0100693, 0.0029993, -0.0105065, 0.958335, 0.
 fov = 90.0
 
 [node name="Light" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.632831, -0.128842, 0.763496, 0.604243, -0.69876, 0.382915, 0.484165, 0.703657, 0.520049, 1.81389, 3.85554, 0.417552)
+transform = Transform3D(-0.835895, 0.196326, 0.512577, 0.258579, -0.682879, 0.683238, 0.484165, 0.703657, 0.520049, 6.1979, 11.3567, 0.417552)
 shadow_enabled = true
 
 [node name="FloorTest" type="MeshInstance3D" parent="."]
