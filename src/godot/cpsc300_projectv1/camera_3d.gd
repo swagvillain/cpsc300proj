@@ -1,3 +1,4 @@
+
 extends Camera3D
 
 @export var acceleration = 25.0
@@ -6,23 +7,32 @@ extends Camera3D
 
 var velocity = Vector3.ZERO
 var lookAngles = Vector2.ZERO
+var initialized = false
 
-func _read():
+func _ready():
+	# Ensure mouse capture is set only once when the scene starts
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	lookAngles = Vector2(deg_to_rad(rotation.y), deg_to_rad(rotation.x))
 
 func _process(delta):
-	lookAngles.y = clamp(lookAngles.y, PI/-2, PI/2)
+	# Clamp the vertical rotation (pitch) to prevent flipping
+	lookAngles.y = clamp(lookAngles.y, -PI / 2, PI / 2)
+
+	# Apply rotation to the camera
 	set_rotation(Vector3(lookAngles.y, lookAngles.x, 0))
+
+	# Update movement direction
 	var direction = updateDirection()
 	if direction.length_squared() > 0:
 		velocity += direction * acceleration * delta
+
 	if velocity.length() > moveSpeed:
 		velocity = velocity.normalized() * moveSpeed
 		
-		translate(velocity * delta)
+	translate(velocity * delta)
 		
 func _input(event):
-	#mouse rotation
+	# Mouse movement input for camera rotation
 	if event is InputEventMouseMotion:
 		lookAngles -= event.relative / mouseSpeed
 
@@ -40,7 +50,9 @@ func updateDirection():
 		dir += Vector3.UP
 	if Input.is_action_pressed("move_down"):
 		dir += Vector3.DOWN
-	if 	dir == Vector3.ZERO:
+	
+	if dir == Vector3.ZERO:
 		velocity = Vector3.ZERO
 	
-	return dir.normalized()	
+	return dir.normalized()
+	
