@@ -28,7 +28,7 @@ cell_size = Vector3(1, 1, 1)
 metadata/_editor_floor_ = Vector3(0, 0, -10)
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.999945, 0.0100693, 0.00299931, -0.0104173, 0.913074, 0.407661, 0.00136628, -0.40767, 0.913128, 0.146625, 12.2021, 7.69795)
+transform = Transform3D(0.999945, 0.0100693, 0.00299931, -0.0104173, 0.913074, 0.407661, 0.00136628, -0.40767, 0.913128, 0.146625, 12.2021, 14.3472)
 fov = 90.0
 script = ExtResource("2_e7r06")
 
