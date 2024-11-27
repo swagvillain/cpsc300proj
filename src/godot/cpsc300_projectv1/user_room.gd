@@ -4,8 +4,9 @@ extends Node3D
 # This is what we should replace with the user input, 
 # walls could be a const 4 though, higher looks kinda weird
 # and isn't needed by the program
-var length : int = 30   
-var width : int = 20   
+
+var length : int = int(Generate.room_x)  
+var width : int =  int(Generate.room_z)  
 var height : int = 4
 
 # GridMap and MeshLibrary reference
@@ -37,3 +38,7 @@ func generate_room():
 # Check if the position is on the edge of the grid (+1 accounts for the extended dimensions)
 func is_edge(x: int, z: int) -> bool:
 	return x == 0 or x == length+1 or z == 0 or z == width+1
+	
+	
+	
+	

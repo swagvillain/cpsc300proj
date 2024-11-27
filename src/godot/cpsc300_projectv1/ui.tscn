@@ -39,14 +39,14 @@ text = "Dimensions
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="room x" type="LineEdit" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
+[node name="room_x" type="LineEdit" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
 layout_mode = 2
 
 [node name="room_by" type="Label" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
 layout_mode = 2
 text = "x"
 
-[node name="room y" type="LineEdit" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
+[node name="room_z" type="LineEdit" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
 layout_mode = 2
 
 [node name="Objects" type="Label" parent="MarginContainer/Menu_Vertical"]
@@ -86,5 +86,8 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Generate"
+script = ExtResource("1_lbf2m")
 
+[connection signal="text_changed" from="MarginContainer/Menu_Vertical/Room Dimensions/room_x" to="MarginContainer/Menu_Vertical/Generate" method="_on_room_x_text_changed"]
+[connection signal="text_changed" from="MarginContainer/Menu_Vertical/Room Dimensions/room_z" to="." method="_on_room_z_text_changed"]
 [connection signal="pressed" from="MarginContainer/Menu_Vertical/Generate" to="." method="_on_generate_pressed"]

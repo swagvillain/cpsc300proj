@@ -15,6 +15,10 @@ run/main_scene="res://ui.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Generate="*res://generate.gd"
+
 [display]
 
 window/stretch/mode="canvas_items"
