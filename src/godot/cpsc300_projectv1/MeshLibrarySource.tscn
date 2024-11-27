@@ -1,32 +1,27 @@
-[gd_scene load_steps=11 format=3 uid="uid://do31exq1anrp4"]
+[gd_scene load_steps=12 format=3 uid="uid://do31exq1anrp4"]
+
+[ext_resource type="Texture2D" uid="uid://cvitgbdwer38t" path="res://textures/oak-stack-1110-mm-architextures.jpg" id="1_0swn4"]
+[ext_resource type="ArrayMesh" uid="uid://trpnlxnh7lyi" path="res://textures/Bed.obj" id="2_e8y1f"]
+[ext_resource type="ArrayMesh" uid="uid://dg8okg0r1kkj6" path="res://textures/DeskProject.obj" id="3_oxnxi"]
+[ext_resource type="ArrayMesh" uid="uid://vvt74obl2xgk" path="res://textures/Office chair 1.0.obj" id="4_gu5hg"]
+[ext_resource type="ArrayMesh" uid="uid://blhvf7o2pm3h7" path="res://textures/Free model Drawer(Final) .obj" id="5_a7myx"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_bumc7"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0wvj0"]
 albedo_color = Color(0.2, 0.083, 0.02, 1)
+albedo_texture = ExtResource("1_0swn4")
 
 [sub_resource type="BoxMesh" id="BoxMesh_xa2nl"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ifcf8"]
-albedo_color = Color(0.321577, 0.297069, 0.568692, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_fa131"]
-lightmap_size_hint = Vector2i(44, 41)
-size = Vector3(3, 1, 5)
+albedo_texture = ExtResource("1_0swn4")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5s48m"]
 albedo_color = Color(0.724643, 0.724643, 0.724643, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_ucyp1"]
-size = Vector3(4, 1.5, 1.5)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r3ex1"]
 albedo_color = Color(0.19, 0.12331, 0.0418, 1)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_djtlp"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_80a00"]
-albedo_color = Color(0.948825, 9.76092e-05, 0.747186, 1)
 
 [node name="MeshLibrarySource" type="Node3D"]
 
@@ -42,13 +37,18 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ifcf8")
 
 [node name="bed" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.75129)
-mesh = SubResource("BoxMesh_fa131")
+mesh = ExtResource("2_e8y1f")
 surface_material_override/0 = SubResource("StandardMaterial3D_5s48m")
 
 [node name="desk" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_ucyp1")
+mesh = ExtResource("3_oxnxi")
 surface_material_override/0 = SubResource("StandardMaterial3D_r3ex1")
 
 [node name="chair" type="MeshInstance3D" parent="."]
-mesh = SubResource("CylinderMesh_djtlp")
-surface_material_override/0 = SubResource("StandardMaterial3D_80a00")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.04578)
+mesh = ExtResource("4_gu5hg")
+
+[node name="bedsideTable" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.75129)
+mesh = ExtResource("5_a7myx")
+surface_material_override/0 = SubResource("StandardMaterial3D_5s48m")
