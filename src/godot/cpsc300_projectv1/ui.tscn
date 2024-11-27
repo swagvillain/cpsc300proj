@@ -39,6 +39,10 @@ text = "Dimensions
 layout_mode = 2
 size_flags_horizontal = 4
 
+[node name="xAxisLabel" type="Label" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
+layout_mode = 2
+text = "Length"
+
 [node name="room_x" type="LineEdit" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
 layout_mode = 2
 
@@ -49,14 +53,26 @@ text = "x"
 [node name="room_z" type="LineEdit" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
 layout_mode = 2
 
+[node name="zAxisLabel2" type="Label" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
+layout_mode = 2
+text = "Width"
+
 [node name="Objects" type="Label" parent="MarginContainer/Menu_Vertical"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Objects
 "
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/Menu_Vertical"]
+[node name="ObjectTypeDropdown" type="OptionButton" parent="MarginContainer/Menu_Vertical"]
 layout_mode = 2
+item_count = 4
+popup/item_0/text = "bed"
+popup/item_1/text = "desk"
+popup/item_1/id = 1
+popup/item_2/text = "chair"
+popup/item_2/id = 2
+popup/item_3/text = "bedsideTable"
+popup/item_3/id = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Menu_Vertical"]
 layout_mode = 2
@@ -69,15 +85,12 @@ layout_mode = 2
 layout_mode = 2
 text = "x"
 
-[node name="objecty" type="LineEdit" parent="MarginContainer/Menu_Vertical/HBoxContainer"]
-layout_mode = 2
-
-[node name="objectby2" type="Label" parent="MarginContainer/Menu_Vertical/HBoxContainer"]
-layout_mode = 2
-text = "x"
-
 [node name="objectz" type="LineEdit" parent="MarginContainer/Menu_Vertical/HBoxContainer"]
 layout_mode = 2
+
+[node name="AddObject" type="Button" parent="MarginContainer/Menu_Vertical"]
+layout_mode = 2
+text = "Add"
 
 [node name="ItemList" type="ItemList" parent="MarginContainer/Menu_Vertical"]
 layout_mode = 2
@@ -90,4 +103,5 @@ script = ExtResource("1_lbf2m")
 
 [connection signal="text_changed" from="MarginContainer/Menu_Vertical/Room Dimensions/room_x" to="MarginContainer/Menu_Vertical/Generate" method="_on_room_x_text_changed"]
 [connection signal="text_changed" from="MarginContainer/Menu_Vertical/Room Dimensions/room_z" to="." method="_on_room_z_text_changed"]
+[connection signal="pressed" from="MarginContainer/Menu_Vertical/AddObject" to="." method="_on_add_object_pressed"]
 [connection signal="pressed" from="MarginContainer/Menu_Vertical/Generate" to="." method="_on_generate_pressed"]

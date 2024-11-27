@@ -2,7 +2,7 @@
 extends Camera3D
 
 @export var acceleration = 25.0
-@export var moveSpeed = 5.0
+@export var moveSpeed = 10.0
 @export var mouseSpeed = 300.0
 
 var velocity = Vector3.ZERO
