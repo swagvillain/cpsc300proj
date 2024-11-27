@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://fusk267e0y4n"]
+[gd_scene load_steps=9 format=3 uid="uid://fusk267e0y4n"]
 
 [ext_resource type="Script" path="res://user_room.gd" id="1_esxlf"]
 [ext_resource type="MeshLibrary" uid="uid://c4unfp5qvodli" path="res://MeshLibraryV1.tres" id="1_wieen"]
 [ext_resource type="PackedScene" uid="uid://do31exq1anrp4" path="res://MeshLibrarySource.tscn" id="2_8oh6v"]
 [ext_resource type="Script" path="res://camera_3d.gd" id="2_e7r06"]
+[ext_resource type="Script" path="res://pause.gd" id="4_hjujg"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_qpwhn"]
 
@@ -50,7 +51,8 @@ mesh = SubResource("CapsuleMesh_qpwhn")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_lnbrs")
 
-[node name="Control" type="Control" parent="."]
+[node name="Pause" type="Control" parent="."]
+process_mode = 3
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -58,11 +60,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("4_hjujg")
 
-[node name="ColorRect" type="ColorRect" parent="Control"]
+[node name="ColorRect" type="ColorRect" parent="Pause"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(1, 1, 1, 0.352941)
