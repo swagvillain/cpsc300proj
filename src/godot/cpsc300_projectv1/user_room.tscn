@@ -70,3 +70,34 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 1, 1, 0.352941)
+
+[node name="PanelContainer" type="PanelContainer" parent="Pause"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.341681
+anchor_top = 0.340975
+anchor_right = 0.664528
+anchor_bottom = 0.657481
+offset_left = 0.383972
+offset_top = 0.0479736
+offset_right = -0.536072
+offset_bottom = -0.0480042
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Pause/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Regenerate" type="Button" parent="Pause/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Regenerate"
+
+[node name="Exit" type="Button" parent="Pause/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Exit"
+
+[connection signal="pressed" from="Pause/PanelContainer/VBoxContainer/Regenerate" to="Pause" method="_on_regenerate_pressed"]
+[connection signal="pressed" from="Pause/PanelContainer/VBoxContainer/Exit" to="Pause" method="_on_exit_pressed"]
