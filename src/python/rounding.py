@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 
-def round_near_integers_with_progress(input_file, output_file, threshold=0):
+def round_near_integers_with_progress(input_file, output_file, threshold=0.1):
     # Read the CSV into a DataFrame
     df = pd.read_csv(input_file)
     
