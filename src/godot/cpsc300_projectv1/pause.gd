@@ -17,14 +17,10 @@ func _input(pause_pressed: InputEvent) -> void:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		else:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-			
-
 
 func _on_regenerate_pressed() -> void:
 	get_tree().paused = false
 	get_tree().reload_current_scene()
-
-	
 
 func _on_exit_pressed() -> void:
 	get_tree().quit()
