@@ -5,23 +5,22 @@
 [ext_resource type="PackedScene" uid="uid://do31exq1anrp4" path="res://MeshLibrarySource.tscn" id="2_8oh6v"]
 [ext_resource type="Script" path="res://camera_3d.gd" id="2_e7r06"]
 [ext_resource type="Script" path="res://pause.gd" id="4_hjujg"]
-[ext_resource type="Texture2D" uid="uid://6mg6acxm23sa" path="res://textures/Epic_BlueSunset_EquiRect_flat.png" id="5_r1umy"]
+[ext_resource type="Texture2D" uid="uid://6mg6acxm23sa" path="res://textures/Epic_BlueSunset_EquiRect_flat.png" id="5_l0kxw"]
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_0w5c2"]
-panorama = ExtResource("5_r1umy")
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_2m8qo"]
+panorama = ExtResource("5_l0kxw")
 
-[sub_resource type="Sky" id="Sky_m0kk1"]
-sky_material = SubResource("PanoramaSkyMaterial_0w5c2")
+[sub_resource type="Sky" id="Sky_yuy2g"]
+sky_material = SubResource("PanoramaSkyMaterial_2m8qo")
 
 [sub_resource type="Environment" id="Environment_lnbrs"]
 background_mode = 2
 background_color = Color(0.410314, 0.0462847, 0.565611, 1)
-background_energy_multiplier = 0.97
-sky = SubResource("Sky_m0kk1")
+background_energy_multiplier = 1.67
+sky = SubResource("Sky_yuy2g")
 ambient_light_source = 3
-ambient_light_color = Color(0.710143, 0.188916, 0.350229, 1)
-volumetric_fog_enabled = true
-volumetric_fog_density = 0.0001
+ambient_light_color = Color(0.758667, 0.149666, 0.140045, 1)
+volumetric_fog_density = 0.0079
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_esxlf")
