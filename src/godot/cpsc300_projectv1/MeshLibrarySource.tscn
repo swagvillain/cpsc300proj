@@ -15,6 +15,7 @@ albedo_texture = ExtResource("1_0swn4")
 [sub_resource type="BoxMesh" id="BoxMesh_xa2nl"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ifcf8"]
+albedo_color = Color(0.28817, 0.222935, 0.103761, 1)
 albedo_texture = ExtResource("1_0swn4")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5s48m"]
