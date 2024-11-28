@@ -50,7 +50,7 @@ text = "x"
 
 [node name="room_z" type="LineEdit" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
 layout_mode = 2
-placeholder_text = "Length"
+placeholder_text = "Width"
 
 [node name="Objects" type="Label" parent="MarginContainer/Menu_Vertical"]
 layout_mode = 2

@@ -29,7 +29,7 @@ func _on_add_object_pressed() -> void:
 
 	# Get the X and Z scaling from the LineEdits
 	var x = float(x_input.text)
-	var y = 1
+	var y = 2
 	var z = float(z_input.text)
 
 	# Turn the scaling into a vector for use in the dictionary

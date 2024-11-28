@@ -13,8 +13,6 @@ var user_objects = Generate.user_objects
 var placed_objects : Array = []  # Store references to placed MeshInstance3D objects
 
 var mesh_library : Dictionary = {}  # To store meshes by name
-var grid_size : float = 1  # Size of each grid cell, currently works best at 1, 
-							# This is something I want to adjust, see later in placement
 
 @onready var gridmap : GridMap = $GridMap  # Reference to the GridMap child
 
@@ -88,13 +86,14 @@ func place_objects_based_on_input():
 			var success = false
 			
 			# Try to place the object randomly until it is placed or we run out of attempts
-			for attempt in range(100):  # Try 100 times (you can adjust this limit)
-				# Generate a random position within the bounds of the room, considering the object size
-				var random_x = randf_range(1, length * grid_size - object_size.x * grid_size)
-				var random_z = randf_range(1, width * grid_size - object_size.z * grid_size)
+			for attempt in range(100):  # Try 100 times
+				# Generate a random position within the bounds of the room and object size
+				# Objects are placed from the center, so look for points in that range
+				var random_x = randf_range((object_size.x/2) + 1, length - (object_size.x/2) + 1)
+				var random_z = randf_range((object_size.z/2) + 1, width - (object_size.z/2) + 1)
 
 				# Generate the grid position
-				var object_position = Vector3(random_x, grid_size*2, random_z)  			
+				var object_position = Vector3(random_x, object_size.y, random_z)  
 				# Try to place the object at this position
 				if valid_position(object_position, object_size):
 					place_object(object_name, object_position, object_size)
@@ -109,14 +108,14 @@ func place_objects_based_on_input():
 # Function to check if an object can be placed at a given position
 func valid_position(grid_pos : Vector3, scale : Vector3) -> bool:
 	# Check if the object is inside the bounds of the room
-	if grid_pos.x < 1 or grid_pos.x + scale.x * grid_size > length * grid_size:
+	if grid_pos.x < 1 or grid_pos.x + scale.x > (length + 1) :
 		return false	
-	if grid_pos.z < 1 or grid_pos.z + scale.z * grid_size > width * grid_size:
+	if grid_pos.z < 1 or grid_pos.z + scale.z  > (width + 1) :
 		return false
 	
 	
 	# Compute the test AABB for the object being placed
-	var test_aabb = AABB(grid_pos, scale * grid_size)
+	var test_aabb = AABB(grid_pos, scale )
 	
 	# Check for overlap with other objects
 	for object_data in placed_objects:
@@ -141,7 +140,7 @@ func get_scaled_aabb(object: MeshInstance3D) -> AABB:
 func snap_to_grid(grid_pos : Vector3) -> Vector3:
 	# This function rounds the position to the nearest grid position
 	# We scale it by grid_size for the snapping to the grid.
-	return Vector3(round(grid_pos.x / grid_size) * grid_size, grid_pos.y, round(grid_pos.z / grid_size) * grid_size)
+	return Vector3(grid_pos.x, grid_pos.y, grid_pos.z)
 
 
 # MeshLibrary indices
