@@ -33,18 +33,16 @@ size_flags_vertical = 4
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Dimensions
-"
+(meters)"
+horizontal_alignment = 1
 
 [node name="Room Dimensions" type="HBoxContainer" parent="MarginContainer/Menu_Vertical"]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="xAxisLabel" type="Label" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
-layout_mode = 2
-text = "Length"
-
 [node name="room_x" type="LineEdit" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
 layout_mode = 2
+placeholder_text = "Length"
 
 [node name="room_by" type="Label" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
 layout_mode = 2
@@ -52,10 +50,7 @@ text = "x"
 
 [node name="room_z" type="LineEdit" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
 layout_mode = 2
-
-[node name="zAxisLabel2" type="Label" parent="MarginContainer/Menu_Vertical/Room Dimensions"]
-layout_mode = 2
-text = "Width"
+placeholder_text = "Length"
 
 [node name="Objects" type="Label" parent="MarginContainer/Menu_Vertical"]
 layout_mode = 2
@@ -80,6 +75,7 @@ size_flags_horizontal = 4
 
 [node name="objectx" type="LineEdit" parent="MarginContainer/Menu_Vertical/HBoxContainer"]
 layout_mode = 2
+placeholder_text = "Length"
 
 [node name="objectby1" type="Label" parent="MarginContainer/Menu_Vertical/HBoxContainer"]
 layout_mode = 2
@@ -87,6 +83,7 @@ text = "x"
 
 [node name="objectz" type="LineEdit" parent="MarginContainer/Menu_Vertical/HBoxContainer"]
 layout_mode = 2
+placeholder_text = "Width"
 
 [node name="AddObject" type="Button" parent="MarginContainer/Menu_Vertical"]
 layout_mode = 2
