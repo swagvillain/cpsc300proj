@@ -42,7 +42,7 @@ func load_mesh_library():
 	# Optional, remove the library instance from the scene as we just need the meshes
 	library_instance.queue_free()
 
-func place_object(object_name : String, grid_pos : Vector3, scale : Vector3):
+func place_object(object_name: String, grid_pos: Vector3, scale: Vector3):
 	if not mesh_library.has(object_name):
 		print("Object name not found in library!")
 		return
@@ -53,10 +53,9 @@ func place_object(object_name : String, grid_pos : Vector3, scale : Vector3):
 	# If the position is not valid, do not place the object
 	if not valid_position(grid_pos, scale):
 		return
-
+	
 	# Create a new MeshInstance3D
 	var mesh_instance = MeshInstance3D.new()
-	# Assign the mesh from the library
 	mesh_instance.mesh = mesh_library[object_name]
 	
 	# Apply the scale
@@ -68,8 +67,10 @@ func place_object(object_name : String, grid_pos : Vector3, scale : Vector3):
 	# Add the object to the scene
 	add_child(mesh_instance)
 	
-	# Add it to the placed_objects list
-	placed_objects.append(mesh_instance)
+	# Compute and store the transformed AABB
+	var transformed_aabb = get_scaled_aabb(mesh_instance)
+	placed_objects.append({"instance": mesh_instance, "aabb": transformed_aabb})
+
 
 # Function to place objects randomly
 func place_objects_based_on_input():
@@ -108,18 +109,33 @@ func place_objects_based_on_input():
 # Function to check if an object can be placed at a given position
 func valid_position(grid_pos : Vector3, scale : Vector3) -> bool:
 	# Check if the object is inside the bounds of the room
-	# Note: Subtracting the object's size to avoid overflow
 	if grid_pos.x < 1 or grid_pos.x + scale.x * grid_size > length * grid_size:
 		return false	
 	if grid_pos.z < 1 or grid_pos.z + scale.z * grid_size > width * grid_size:
 		return false
 	
+	
+	# Compute the test AABB for the object being placed
+	var test_aabb = AABB(grid_pos, scale * grid_size)
+	
 	# Check for overlap with other objects
-	for object in placed_objects:
-		var bbox = object.get_aabb()
-		if bbox.intersects(AABB(grid_pos, scale * grid_size)):  # Consider the scaled size
+	for object_data in placed_objects:
+		if object_data["aabb"].intersects(test_aabb):
 			return false
+	
 	return true
+
+
+func get_scaled_aabb(object: MeshInstance3D) -> AABB:
+	var local_aabb = object.get_aabb()  # Local AABB of the mesh
+	# I don't really understand global transforms, but from what i have seen
+	# it seems that the objects AABB doesn't get updated properly when scaled
+	# unless you perform a transform. This could be wrong somewhere
+	var global_position = object.global_transform.origin  # Global position of the object
+	var scaled_size = local_aabb.size * object.scale  # Scale the size of the AABB	
+	
+	return AABB(global_position, scaled_size)  # Return adjusted AABB
+
 
 # Function to snap a position to the grid
 func snap_to_grid(grid_pos : Vector3) -> Vector3:
