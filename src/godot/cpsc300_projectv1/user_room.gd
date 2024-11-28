@@ -10,14 +10,11 @@ var width : int =  int(Generate.room_z)
 var height : int = 4
 
 var user_objects = Generate.user_objects
+var placed_objects : Array = []  # Store references to placed MeshInstance3D objects
 
 var mesh_library : Dictionary = {}  # To store meshes by name
-var grid_size : float = 2.0  # Size of each grid cell, currently works best at 2, 
+var grid_size : float = 1  # Size of each grid cell, currently works best at 1, 
 							# This is something I want to adjust, see later in placement
-
-# User input data: number of objects and their sizes
-# The y variable in Vector3 can stay constant as 1
-# doesn't really matter what the heights of the objects are
 
 @onready var gridmap : GridMap = $GridMap  # Reference to the GridMap child
 
@@ -45,50 +42,91 @@ func load_mesh_library():
 	# Optional, remove the library instance from the scene as we just need the meshes
 	library_instance.queue_free()
 
-# Function to place objects """"based on user input"""" (trust me bro)
+func place_object(object_name : String, grid_pos : Vector3, scale : Vector3):
+	if not mesh_library.has(object_name):
+		print("Object name not found in library!")
+		return
+	
+	# Snap position to the grid and check if it's valid
+	grid_pos = snap_to_grid(grid_pos)
+	
+	# If the position is not valid, do not place the object
+	if not valid_position(grid_pos, scale):
+		return
+
+	# Create a new MeshInstance3D
+	var mesh_instance = MeshInstance3D.new()
+	# Assign the mesh from the library
+	mesh_instance.mesh = mesh_library[object_name]
+	
+	# Apply the scale
+	mesh_instance.scale = scale
+	
+	# Set the position
+	mesh_instance.position = grid_pos
+	
+	# Add the object to the scene
+	add_child(mesh_instance)
+	
+	# Add it to the placed_objects list
+	placed_objects.append(mesh_instance)
+
+# Function to place objects randomly
 func place_objects_based_on_input():
-	var position_offset = Vector3(2, 1, 2)  # Start position for placing objects
+	var total_objects_placed = 0
+
+	# Loop through all objects to place
 	for object_name in user_objects.keys():
 		var object_data = user_objects[object_name]
 		var count = object_data[0]["count"]
 		var sizes = object_data[0]["sizes"]
 
 		# Place each object based on the count and sizes
-		# Either in here or in the place_object function is where the 
-		# adjustments to how things are placed should happen... 
 		for i in range(count):
 			var object_size = sizes[i % sizes.size()]  # Cycle through sizes if more objects than sizes
-			place_object(object_name, position_offset, object_size)
+			var success = false
 			
-			# Increment the position for the next object (current lazy solution)
-			position_offset.x += grid_size * 2  # This is where that grid size comes into play, I don't like it 
+			# Try to place the object randomly until it is placed or we run out of attempts
+			for attempt in range(100):  # Try 100 times (you can adjust this limit)
+				# Generate a random position within the bounds of the room, considering the object size
+				var random_x = randf_range(1, length * grid_size - object_size.x * grid_size)
+				var random_z = randf_range(1, width * grid_size - object_size.z * grid_size)
 
-# Function to place an object at a grid position with a specific scale
-func place_object(object_name : String, grid_pos : Vector3, scale : Vector3):
-	if not mesh_library.has(object_name):
-		print("Object name not found in library!")
-		return
+				# Generate the grid position
+				var object_position = Vector3(random_x, grid_size*2, random_z)  			
+				# Try to place the object at this position
+				if valid_position(object_position, object_size):
+					place_object(object_name, object_position, object_size)
+					total_objects_placed += 1
+					success = true
+					break  # Break the loop if the object is successfully placed
+
+			# If we couldn't place the object, print a message (optional)
+			if not success:
+				print("Failed to place object:", object_name)
+
+# Function to check if an object can be placed at a given position
+func valid_position(grid_pos : Vector3, scale : Vector3) -> bool:
+	# Check if the object is inside the bounds of the room
+	# Note: Subtracting the object's size to avoid overflow
+	if grid_pos.x < 1 or grid_pos.x + scale.x * grid_size > length * grid_size:
+		return false	
+	if grid_pos.z < 1 or grid_pos.z + scale.z * grid_size > width * grid_size:
+		return false
 	
-	# Create a new MeshInstance3D
-	var mesh_instance = MeshInstance3D.new()
-	# Assign the mesh from the library
-	mesh_instance.mesh = mesh_library[object_name]  
-	
-	# Apply the scale
-	mesh_instance.scale = scale
-	
-	# Snapping the position to the grid
-	# Can't add the mesh directly to the grid map cell
-	# because the set_cell_item method works on meshes currently
-	# in the gridmaps mesh library, not any mesh (lmao, why are we using gridmap T_T)
-	mesh_instance.position = snap_to_grid(grid_pos)
-	
-	# Adding the object to the scene makes it visible
-	add_child(mesh_instance)
+	# Check for overlap with other objects
+	for object in placed_objects:
+		var bbox = object.get_aabb()
+		if bbox.intersects(AABB(grid_pos, scale * grid_size)):  # Consider the scaled size
+			return false
+	return true
 
 # Function to snap a position to the grid
 func snap_to_grid(grid_pos : Vector3) -> Vector3:
-	return grid_pos * grid_size # again see grid size here, just works for scaling
+	# This function rounds the position to the nearest grid position
+	# We scale it by grid_size for the snapping to the grid.
+	return Vector3(round(grid_pos.x / grid_size) * grid_size, grid_pos.y, round(grid_pos.z / grid_size) * grid_size)
+
 
 # MeshLibrary indices
 var floor_index : int = 0  # Floor tile index

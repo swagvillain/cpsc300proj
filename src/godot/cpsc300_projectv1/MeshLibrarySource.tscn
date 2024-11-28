@@ -1,10 +1,10 @@
 [gd_scene load_steps=12 format=3 uid="uid://do31exq1anrp4"]
 
 [ext_resource type="Texture2D" uid="uid://cvitgbdwer38t" path="res://textures/oak-stack-1110-mm-architextures.jpg" id="1_0swn4"]
-[ext_resource type="ArrayMesh" uid="uid://trpnlxnh7lyi" path="res://textures/Bed.obj" id="2_e8y1f"]
-[ext_resource type="ArrayMesh" uid="uid://dg8okg0r1kkj6" path="res://textures/DeskProject.obj" id="3_oxnxi"]
-[ext_resource type="ArrayMesh" uid="uid://vvt74obl2xgk" path="res://textures/Office chair 1.0.obj" id="4_gu5hg"]
-[ext_resource type="ArrayMesh" uid="uid://blhvf7o2pm3h7" path="res://textures/Free model Drawer(Final) .obj" id="5_a7myx"]
+[ext_resource type="ArrayMesh" uid="uid://bn1ep6r5ewhm7" path="res://textures/Bed.obj" id="2_e8y1f"]
+[ext_resource type="ArrayMesh" uid="uid://70hoqatnv7qi" path="res://textures/DeskProject.obj" id="3_oxnxi"]
+[ext_resource type="ArrayMesh" uid="uid://drumt1lbi2d8m" path="res://textures/Office chair 1.0.obj" id="4_gu5hg"]
+[ext_resource type="ArrayMesh" uid="uid://bxthnsg38ckuw" path="res://textures/Free model Drawer(Final) .obj" id="5_a7myx"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_bumc7"]
 
@@ -32,6 +32,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_0wvj0")
 
 [node name="wallTile" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.59078, 0, 0)
+custom_aabb = AABB(1, 1, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_xa2nl")
 surface_material_override/0 = SubResource("StandardMaterial3D_ifcf8")
 
