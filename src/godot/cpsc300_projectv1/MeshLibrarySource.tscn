@@ -26,18 +26,16 @@ albedo_color = Color(0.19, 0.12331, 0.0418, 1)
 [node name="MeshLibrarySource" type="Node3D"]
 
 [node name="floorTile" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.00106468, 0.999999, 0, -0.999999, -0.00106468, -4.13574, 0, 0)
+transform = Transform3D(1, 0, 0, 0, -0.00106468, 0.999999, 0, -0.999999, -0.00106468, 0, 0, 0)
 mesh = SubResource("BoxMesh_bumc7")
 surface_material_override/0 = SubResource("StandardMaterial3D_0wvj0")
 
 [node name="wallTile" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.59078, 0, 0)
 custom_aabb = AABB(1, 1, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_xa2nl")
 surface_material_override/0 = SubResource("StandardMaterial3D_ifcf8")
 
 [node name="bed" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.75129)
 mesh = ExtResource("2_e8y1f")
 surface_material_override/0 = SubResource("StandardMaterial3D_5s48m")
 
@@ -46,10 +44,8 @@ mesh = ExtResource("3_oxnxi")
 surface_material_override/0 = SubResource("StandardMaterial3D_r3ex1")
 
 [node name="chair" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.04578)
 mesh = ExtResource("4_gu5hg")
 
 [node name="bedsideTable" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.75129)
 mesh = ExtResource("5_a7myx")
 surface_material_override/0 = SubResource("StandardMaterial3D_5s48m")
