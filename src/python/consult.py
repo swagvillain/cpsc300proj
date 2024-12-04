@@ -20,8 +20,10 @@ else:
     for line in content:
         array.append(line)
 
-    print(array)
-
+    # centroids: x, y, z coordinates of centre of object
+    # coeffiecents: multipliers denoting width/length/height of obj 
+    # room_ID: random int 0-3440
+    # dist_to_nearest: distance between this and nearest boundingbox
     feature_names = ['centroid_x','centroid_y','centroid_z','coeffs_x','coeffs_y','coeffs_z','room_ID','dist_to_nearest']
 
     input_row = np.array([array])
@@ -30,3 +32,7 @@ else:
     prediction = model.predict(input_row_df)
 
     print(prediction)
+
+    # Output
+
+
