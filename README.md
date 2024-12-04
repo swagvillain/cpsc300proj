@@ -3,13 +3,13 @@ Instructions for Terry:
 <ins>Dependancies</ins>  
 Godot (non C# version shold work but not tested)  
 Python  
-pip
-numpy
-scikit-learn
-pickle
-pandas
-matplotlib.pyplot
-tqdm
+pip  
+numpy  
+scikit-learn  
+pickle  
+pandas  
+matplotlib.pyplot  
+tqdm  
 (Optional) Pycharm Ultimate (if you would like to properly interact with the .ipynb)
 
 <ins>How to run godot project</ins>  
