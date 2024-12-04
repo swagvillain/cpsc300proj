@@ -11,13 +11,15 @@ var placed_objects : Array = []  # Store references to placed MeshInstance3D obj
 
 var mesh_library : Dictionary = {}  # To store meshes by name
 
+var floor_index : int = 0  # Floor tile index
+var wall_index : int = 1   # Wall tile index
+
 var reloads : int = 0
 
 @onready var gridmap : GridMap = $GridMap  # Reference to the GridMap child
 
 
 func _ready():
-	# Load the mesh library from the MeshLibraryScene
 	load_mesh_library()
 	
 	#place floors and walls
@@ -31,7 +33,10 @@ func _ready():
 		
 		print_object_to_file(object)
 		print("now executing")
-		OS.execute("src/python/consult.py", [])
+		# This is the error line. The Godot is not properly calling the python script.
+		# Unsure of how to make OS.execute properly function in Godot, would have liked this
+		# in the final project
+		OS.execute("src/python/consult.py", []) 
 		print("get executed")
 		var consult_query_content = consult_output.get_as_text().strip_edges()  # Get content and strip extra spaces/newlines
 		
@@ -84,7 +89,7 @@ func load_mesh_library():
 	library_instance.queue_free()
 
 
-# Function to place objects randomly with rotation
+# Function to place objects randomly
 func attempt_object_placement():
 	# Loop through all objects to place
 	for object_name in user_objects.keys():
@@ -97,13 +102,11 @@ func attempt_object_placement():
 			var object_size = sizes[i % sizes.size()]  # Cycle through sizes if more objects than sizes
 			var success = false
 			
-			# Try to place the object with one of the 4 rotations
 			for attempt in range(100):  # Try 100 times
 				var object_position = Vector3(randf_range((object_size.x / 2) + 1, length - (object_size.x / 2) + 1), 
 				(object_size.y / 2) + 1, randf_range((object_size.z / 2) + 1, width - (object_size.z / 2) + 1))
 				# The issue that shows up when placing a weirdly y scaled object comes from slight size differences in the base meshes
 				
-				# Try to place the object with the rotated size
 				if valid_position(object_position, object_size):
 					place_object(object_name, object_position, object_size)
 					success = true
@@ -122,27 +125,23 @@ func place_object(object_name: String, grid_pos: Vector3, scale: Vector3):
 		print("Object name not found in library")
 		return
 		
-	# Snap position to the grid and check if it's valid
 	grid_pos = snap_to_grid(grid_pos)
 	
 	# If the position is not valid, do not place the object
 	if not valid_position(grid_pos, scale):
 		return
 	
-	# Create a new MeshInstance3D
 	var mesh_instance = MeshInstance3D.new()
 	mesh_instance.mesh = mesh_library[object_name]
 	
-	# Apply the scale
 	mesh_instance.scale = scale
 	
-	# Set the position
 	mesh_instance.position = grid_pos
 	
-	# Add the object to the scene
+	# Add the object to the scene makes it visible
 	add_child(mesh_instance)
 	
-	# Compute and store the transformed AABB
+	# Compute and store the transformed AABB (I dont think it is perfectly fit to the object)
 	var transformed_aabb = get_scaled_aabb(mesh_instance)
 	
 	placed_objects.append({"instance": mesh_instance, "aabb": transformed_aabb})
@@ -178,16 +177,11 @@ func get_scaled_aabb(object: MeshInstance3D) -> AABB:
 	return AABB(global_position, scaled_size)  # Return adjusted AABB
 
 
-# Function to snap a position to the grid
 func snap_to_grid(grid_pos : Vector3) -> Vector3:
 	# This function rounds the position to the nearest grid position
 	# We scale it by grid_size for the snapping to the grid.
 	return Vector3(grid_pos.x, grid_pos.y, grid_pos.z)
 
-
-# MeshLibrary indices
-var floor_index : int = 0  # Floor tile index
-var wall_index : int = 1   # Wall tile index
 
 func reset_placement():
 	for object_data in placed_objects:
@@ -203,10 +197,10 @@ func generate_room():
 	# place walls around the perimeter (edges)
 	for x in range(length + 2):  # Adding 2 to each allows us to creating a boxed perimeter around floor
 		for z in range(width + 2): 
-			if is_edge(x, z):  # Check if it's an edge position
+			if is_edge(x, z): 
 				for y in range(height):
-					var wall_position = Vector3i(x, y, z)  # Set height (y) of the cell
-					gridmap.set_cell_item(wall_position, wall_index)  # Place the wall 
+					var wall_position = Vector3i(x, y, z)
+					gridmap.set_cell_item(wall_position, wall_index)
 			else:
 				var floor_position = Vector3i(x, 0, z) # Set x and z of the cell
 				gridmap.set_cell_item(floor_position, floor_index)  # Place floor tiles 
