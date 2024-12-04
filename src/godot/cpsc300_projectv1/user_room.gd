@@ -5,8 +5,8 @@ extends Node3D
 # walls could be a const 4 though, higher looks kinda weird
 # and isn't needed by the program
 
-var length : int = int(Generate.room_x)  
-var width : int =  int(Generate.room_z)  
+var length : int = int(Generate.room_x)
+var width : int =  int(Generate.room_z)
 var height : int = 4
 
 var user_objects = Generate.user_objects
@@ -15,6 +15,7 @@ var placed_objects : Array = []  # Store references to placed MeshInstance3D obj
 var mesh_library : Dictionary = {}  # To store meshes by name
 
 @onready var gridmap : GridMap = $GridMap  # Reference to the GridMap child
+
 
 func _ready():
 	# Load the mesh library from the MeshLibraryScene
@@ -30,6 +31,7 @@ func _ready():
 	# or the AI placement depending on how we do it
 	place_objects_based_on_input()
 
+
 # Load meshes into the library
 func load_mesh_library():
 	var library_instance = $MeshLibrarySource
@@ -40,10 +42,9 @@ func load_mesh_library():
 	# Optional, remove the library instance from the scene as we just need the meshes
 	library_instance.queue_free()
 
+
 # Function to place objects randomly with rotation
 func place_objects_based_on_input():
-	var total_objects_placed = 0
-
 	# Loop through all objects to place
 	for object_name in user_objects.keys():
 		var object_data = user_objects[object_name]
@@ -54,57 +55,32 @@ func place_objects_based_on_input():
 		for i in range(count):
 			var object_size = sizes[i % sizes.size()]  # Cycle through sizes if more objects than sizes
 			var success = false
-			# Try to place the object with one of the 4 rotations (randomly first, then others)
+			
+			# Try to place the object with one of the 4 rotations
 			for attempt in range(100):  # Try 100 times
-				# Generate a random rotation
-				var rotation = get_random_rotation()
+				var object_position = Vector3(randf_range((object_size.x / 2) + 1, length - (object_size.x / 2) + 1), 
+				(object_size.y / 2) + 1, randf_range((object_size.z / 2) + 1, width - (object_size.z / 2) + 1))
+				# The issue that shows up when placing a weirdly y scaled object comes from slight size differences in the base meshes
 				
-				# Try to place the object in the position with this rotation
-				for rotation_attempt in rotation:
-					var object_position = Vector3(randf_range((object_size.x / 2) + 1, length - (object_size.x / 2) + 1), 
-					(object_size.y / 2) + 1, randf_range((object_size.z / 2) + 1, width - (object_size.z / 2) + 1))
-					# The issue that shows up when placing a weirdly y scaled object comes from slight size differences in the base meshes
+				# Try to place the object with the rotated size
+				if valid_position(object_position, object_size):
+					place_object(object_name, object_position, object_size)
+					success = true
+					break  # Break the loop if the object is successfully placed
 					
-					# Apply the rotation to the object size for collision checks
-					var rotated_size = rotate_size(object_size, rotation_attempt)
-					
-					# Try to place the object with the rotated size
-					if valid_position(object_position, rotated_size):
-						place_object(object_name, object_position, rotated_size, rotation_attempt)
-						total_objects_placed += 1
-						success = true
-						break  # Break the loop if the object is successfully placed
-
 				if success:
 					break  # Break the outer loop if placement was successful
-
+					
 			# If we couldn't place the object, print a message (optional)
 			if not success:
 				print("Failed to place object:", object_name)
 
-# Get a random rotation (0°, 90°, 180°, 270°)
-func get_random_rotation() -> Array:
-	var rotations = [0, 90, 180, 270]
-	rotations.shuffle()  # Shuffle the array in place
-	return rotations  # Return the shuffled array
 
-# Rotate the size of an object based on the angle
-func rotate_size(original_size: Vector3, rotation_angle: int) -> Vector3:
-	# Rotate the size of the object depending on the rotation angle
-	match rotation_angle:
-		0: return original_size
-		90: return Vector3(original_size.z, original_size.y, original_size.x)
-		180: return Vector3(original_size.x, original_size.y, original_size.z)
-		270: return Vector3(original_size.z, original_size.y, original_size.x)
-		_:
-			return original_size  # Return unmodified if angle is invalid
-
-# Update the place_object function to accept rotation
-func place_object(object_name: String, grid_pos: Vector3, scale: Vector3, rotation: int):
+func place_object(object_name: String, grid_pos: Vector3, scale: Vector3):
 	if not mesh_library.has(object_name):
 		print("Object name not found in library!")
 		return
-	
+		
 	# Snap position to the grid and check if it's valid
 	grid_pos = snap_to_grid(grid_pos)
 	
@@ -122,15 +98,13 @@ func place_object(object_name: String, grid_pos: Vector3, scale: Vector3, rotati
 	# Set the position
 	mesh_instance.position = grid_pos
 	
-	# Apply the rotation to the object
-	mesh_instance.rotation = Vector3(0, deg_to_rad(rotation), 0)
-	
 	# Add the object to the scene
 	add_child(mesh_instance)
 	
 	# Compute and store the transformed AABB
 	var transformed_aabb = get_scaled_aabb(mesh_instance)
 	placed_objects.append({"instance": mesh_instance, "aabb": transformed_aabb})
+
 
 # Function to check if an object can be placed at a given position
 func valid_position(grid_pos : Vector3, scale : Vector3) -> bool:
@@ -140,9 +114,8 @@ func valid_position(grid_pos : Vector3, scale : Vector3) -> bool:
 	if grid_pos.z < 1 or grid_pos.z + scale.z  > (width + 1) :
 		return false
 	
-	
 	# Compute the test AABB for the object being placed
-	var test_aabb = AABB(grid_pos, scale )
+	var test_aabb = AABB(grid_pos, scale)
 	
 	# Check for overlap with other objects
 	for object_data in placed_objects:
@@ -158,7 +131,7 @@ func get_scaled_aabb(object: MeshInstance3D) -> AABB:
 	# it seems that the objects AABB doesn't get updated properly when scaled
 	# unless you perform a transform. This could be wrong somewhere
 	var global_position = object.global_transform.origin  # Global position of the object
-	var scaled_size = local_aabb.size * object.scale  # Scale the size of the AABB	
+	var scaled_size = local_aabb.size * object.scale  # Scale the size of the AABB
 	
 	return AABB(global_position, scaled_size)  # Return adjusted AABB
 
@@ -188,6 +161,7 @@ func generate_room():
 			else:
 				var floor_position = Vector3i(x, 0, z) # Set x and z of the cell
 				gridmap.set_cell_item(floor_position, floor_index)  # Place floor tiles 
+
 
 # Check if the position is on the edge of the grid (+1 accounts for the extended dimensions)
 func is_edge(x: int, z: int) -> bool:

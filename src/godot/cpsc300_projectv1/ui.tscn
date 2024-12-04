@@ -63,8 +63,10 @@ color = Color(0.08, 0.08, 0.08, 0.690196)
 
 [node name="ScrollContainer" type="ScrollContainer" parent="foreground2"]
 layout_mode = 0
-offset_right = 200.0
-offset_bottom = 300.0
+offset_left = 3.0
+offset_top = 4.0
+offset_right = 198.0
+offset_bottom = 299.0
 
 [node name="object_display" type="Label" parent="foreground2/ScrollContainer"]
 layout_mode = 2
