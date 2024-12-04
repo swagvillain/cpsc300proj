@@ -1,10 +1,5 @@
 extends Node3D
 
-# Room dimensions (number of tiles)
-# This is what we should replace with the user input, 
-# walls could be a const 4 though, higher looks kinda weird
-# and isn't needed by the program
-
 var length : int = int(Generate.room_x)
 var width : int = int(Generate.room_z)
 var height : int = 4
@@ -16,6 +11,8 @@ var placed_objects : Array = []  # Store references to placed MeshInstance3D obj
 
 var mesh_library : Dictionary = {}  # To store meshes by name
 
+var reloads : int = Generate.num_of_reloads
+
 @onready var gridmap : GridMap = $GridMap  # Reference to the GridMap child
 
 
@@ -26,11 +23,22 @@ func _ready():
 	#place floors and walls
 	generate_room()
 	
-	
-	# Place all objects based on user input
 	attempt_object_placement()
+	var query = FileAccess.open("res://query.txt", FileAccess.WRITE)
+	var consult_query = FileAccess.open("res://consult_output.txt", FileAccess.READ)
 	
-	print_object_to_file(placed_objects[0])
+	for object in placed_objects:
+		print_object_to_file(object)
+		# Call python script
+		var consult_query_content = consult_query.get_as_text().strip_edges()  # Get content and strip extra spaces/newlines
+		if consult_query_content == "0":
+			if reloads < 100:
+				get_tree().reload_current_scene()
+			else :
+				print("The model couldn't accept your objects, they're placed randomly")
+	
+	query.close
+	consult_query.close
 	
 
 func print_object_to_file(object: Dictionary):

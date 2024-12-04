@@ -3,6 +3,7 @@ extends Control
 static var room_x : String
 static var room_z : String
 static var user_objects : Dictionary = {}
+static var num_of_reloads : int
 
 @onready var object_type_dropdown : OptionButton = $MarginContainer/Menu_Vertical/ObjectTypeDropdown
 @onready var x_input : LineEdit = $MarginContainer/Menu_Vertical/HBoxContainer/objectx
