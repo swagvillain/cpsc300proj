@@ -29,10 +29,19 @@ else:
     input_row = np.array([array])
     input_row_df = pd.DataFrame([array], columns=feature_names)
 
+    # Get the prediction from the model
     prediction = model.predict(input_row_df)
 
-    print(prediction)
+    output_string = np.array2string(prediction)
+    output_string = output_string[1:2]
+    print(output_string)
 
     # Output
+    output_file_path = "src/python/consult_output.txt"
+
+    output = open(output_file_path, 'w')
+
+    # 1 for accepted, 0 for unaccepted
+    output.write(output_string)
 
 
