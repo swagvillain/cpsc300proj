@@ -6,8 +6,10 @@ extends Node3D
 # and isn't needed by the program
 
 var length : int = int(Generate.room_x)
-var width : int =  int(Generate.room_z)
+var width : int = int(Generate.room_z)
 var height : int = 4
+
+var room_centroid : Vector3 = Vector3(float(length)/2, float(width)/2, float(height)/2)
 
 var user_objects = Generate.user_objects
 var placed_objects : Array = []  # Store references to placed MeshInstance3D objects
@@ -23,14 +25,35 @@ func _ready():
 	
 	#place floors and walls
 	generate_room()
-
+	
+	
 	# Place all objects based on user input
-	# This is a temporary function, likely to 
-	# be replaced with either the random placement 
-	# which I haven't figured out the bounding box stuff for yet
-	# or the AI placement depending on how we do it
-	place_objects_based_on_input()
+	attempt_object_placement()
+	
+	print_object_to_file(placed_objects[0])
+	
 
+func print_object_to_file(object: Dictionary):
+	var file = FileAccess.open("res://query.txt", FileAccess.WRITE)
+	var mesh_instance = object["instance"]
+	var transformed_aabb = get_scaled_aabb(mesh_instance)
+	
+	# Extract the centroid (position) and scale from the AABB
+	var position = transformed_aabb.position
+	var scale = transformed_aabb.size
+	
+	file.store_string(str(position.x) + "\n")
+	file.store_string(str(position.z) + "\n")
+	file.store_string(str(position.y) + "\n")
+	
+	file.store_string(str(scale.x) + "\n")
+	file.store_string(str(scale.z) + "\n")
+	file.store_string(str(scale.y) + "\n")
+	
+	file.store_string("0\n")
+	file.store_string("600\n")
+	
+	file.close()
 
 # Load meshes into the library
 func load_mesh_library():
@@ -44,7 +67,7 @@ func load_mesh_library():
 
 
 # Function to place objects randomly with rotation
-func place_objects_based_on_input():
+func attempt_object_placement():
 	# Loop through all objects to place
 	for object_name in user_objects.keys():
 		var object_data = user_objects[object_name]
@@ -78,7 +101,7 @@ func place_objects_based_on_input():
 
 func place_object(object_name: String, grid_pos: Vector3, scale: Vector3):
 	if not mesh_library.has(object_name):
-		print("Object name not found in library!")
+		print("Object name not found in library")
 		return
 		
 	# Snap position to the grid and check if it's valid
@@ -103,6 +126,7 @@ func place_object(object_name: String, grid_pos: Vector3, scale: Vector3):
 	
 	# Compute and store the transformed AABB
 	var transformed_aabb = get_scaled_aabb(mesh_instance)
+	
 	placed_objects.append({"instance": mesh_instance, "aabb": transformed_aabb})
 
 
