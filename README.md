@@ -1,6 +1,6 @@
 Instructions for Terry:
 
-_Dependancies_
+<ins>Dependancies</ins>
 Godot (non C# version shold work but not tested)
 Python 
 pip
@@ -10,7 +10,7 @@ _How to run godot project_
 1. Open project.godot from godot so windows uses correct application
 2. Click triangle in top right to run project.
 
-_Controls_
+<ins>Control</ins>
 Ctrl = Casmera_Down
 Shift = Camera_Up
 WASD = Camera_XY
