@@ -11,7 +11,7 @@ var placed_objects : Array = []  # Store references to placed MeshInstance3D obj
 
 var mesh_library : Dictionary = {}  # To store meshes by name
 
-var reloads : int = Generate.num_of_reloads
+var reloads : int = 0
 
 @onready var gridmap : GridMap = $GridMap  # Reference to the GridMap child
 
@@ -25,20 +25,29 @@ func _ready():
 	
 	attempt_object_placement()
 	var query = FileAccess.open("res://query.txt", FileAccess.WRITE)
-	var consult_query = FileAccess.open("res://consult_output.txt", FileAccess.READ)
+	var consult_output = FileAccess.open("res://consult_output.txt", FileAccess.READ)
 	
 	for object in placed_objects:
+		
 		print_object_to_file(object)
-		# Call python script
-		var consult_query_content = consult_query.get_as_text().strip_edges()  # Get content and strip extra spaces/newlines
-		if consult_query_content == "0":
+		print("now executing")
+		OS.execute("src/python/consult.py", [])
+		print("get executed")
+		var consult_query_content = consult_output.get_as_text().strip_edges()  # Get content and strip extra spaces/newlines
+		
+		while consult_query_content == "0":
+			print("didnt like your placement")
 			if reloads < 100:
-				get_tree().reload_current_scene()
+				reloads += 1
+				print("about to restart")
+				reset_placement()
+				print("back to the beninging")
 			else :
 				print("The model couldn't accept your objects, they're placed randomly")
+				break
 	
 	query.close
-	consult_query.close
+	consult_output.close
 	
 
 func print_object_to_file(object: Dictionary):
@@ -50,13 +59,14 @@ func print_object_to_file(object: Dictionary):
 	var position = transformed_aabb.position
 	var scale = transformed_aabb.size
 	
-	file.store_string(str(position.x) + "\n")
-	file.store_string(str(position.z) + "\n")
-	file.store_string(str(position.y) + "\n")
+	#All the multiplication is basically unit scaling 
+	file.store_string(str(position.x * -20) + "\n")
+	file.store_string(str(position.z * -20) + "\n")
+	file.store_string(str(position.y * 1200) + "\n")
 	
-	file.store_string(str(scale.x) + "\n")
-	file.store_string(str(scale.z) + "\n")
-	file.store_string(str(scale.y) + "\n")
+	file.store_string(str(scale.x * 250) + "\n")
+	file.store_string(str(scale.z * 250) + "\n")
+	file.store_string(str(scale.y * 250) + "\n")
 	
 	file.store_string("0\n")
 	file.store_string("600\n")
@@ -179,6 +189,13 @@ func snap_to_grid(grid_pos : Vector3) -> Vector3:
 var floor_index : int = 0  # Floor tile index
 var wall_index : int = 1   # Wall tile index
 
+func reset_placement():
+	for object_data in placed_objects:
+		object_data["instance"].queue_free()  # Remove object from scene
+		
+	placed_objects.clear()
+
+	attempt_object_placement()
 
 # Function to generate the room (floor + walls)
 func generate_room():
