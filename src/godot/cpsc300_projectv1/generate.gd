@@ -6,7 +6,10 @@ static var user_objects : Dictionary = {}
 
 @onready var object_type_dropdown : OptionButton = $MarginContainer/Menu_Vertical/ObjectTypeDropdown
 @onready var x_input : LineEdit = $MarginContainer/Menu_Vertical/HBoxContainer/objectx
+@onready var y_input : LineEdit = $MarginContainer/Menu_Vertical/HBoxContainer/objecty
 @onready var z_input : LineEdit = $MarginContainer/Menu_Vertical/HBoxContainer/objectz
+@onready var object_display : Label = $foreground2/ScrollContainer/object_display
+
 @onready var add_object_button : Button = $AddObject
 
 # Called when the node enters the scene tree for the first time.
@@ -18,9 +21,15 @@ func _process(delta: float) -> void:
 	pass
 	
 func _on_generate_pressed() -> void:
+	if float(room_x) < 1 or float(room_z) < 1 :
+		return 
+		
 	get_tree().change_scene_to_file("res://user_room.tscn")
 	
 func _on_add_object_pressed() -> void:
+	# Make sure x, y, and z inputs are not empty
+	if x_input.text == "" or y_input.text == "" or z_input.text == "":
+		return
 	# Get the selected object type from the dropdown
 	var selected_type = object_type_dropdown.get_selected_id()
 
@@ -29,7 +38,7 @@ func _on_add_object_pressed() -> void:
 
 	# Get the X and Z scaling from the LineEdits
 	var x = float(x_input.text)
-	var y = 2
+	var y = float(y_input.text)
 	var z = float(z_input.text)
 
 	# Turn the scaling into a vector for use in the dictionary
@@ -37,10 +46,14 @@ func _on_add_object_pressed() -> void:
 
 	# Add the object to the global user_objects dictionary
 	add_object(user_objects, object_name, scale)
-
+	
+	# Display the object in the UI
+	object_display.text = object_display.text + object_name + " (" + x_input.text + ", "+ z_input.text + ", "+  y_input.text + ")"+ "\n" 
+	
 	# Clear the inputs, here we could also give feedback to the user
 	x_input.clear()
 	z_input.clear()
+	y_input.clear()
 	
 
 # Method to add objects to the user_objects dictionary

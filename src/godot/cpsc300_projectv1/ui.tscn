@@ -17,6 +17,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -3520.0
+offset_top = -1724.0
+offset_right = 3520.0
+offset_bottom = 1724.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -39,6 +43,31 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 color = Color(0.08, 0.08, 0.08, 0.690196)
+
+[node name="foreground2" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 165.0
+offset_top = -150.0
+offset_right = 365.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.08, 0.08, 0.08, 0.690196)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="foreground2"]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 300.0
+
+[node name="object_display" type="Label" parent="foreground2/ScrollContainer"]
+layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -113,6 +142,14 @@ text = "x"
 [node name="objectz" type="LineEdit" parent="MarginContainer/Menu_Vertical/HBoxContainer"]
 layout_mode = 2
 placeholder_text = "Width"
+
+[node name="objectby2" type="Label" parent="MarginContainer/Menu_Vertical/HBoxContainer"]
+layout_mode = 2
+text = "x"
+
+[node name="objecty" type="LineEdit" parent="MarginContainer/Menu_Vertical/HBoxContainer"]
+layout_mode = 2
+placeholder_text = "Height"
 
 [node name="AddObject" type="Button" parent="MarginContainer/Menu_Vertical"]
 layout_mode = 2

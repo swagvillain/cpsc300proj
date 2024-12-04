@@ -40,7 +40,67 @@ func load_mesh_library():
 	# Optional, remove the library instance from the scene as we just need the meshes
 	library_instance.queue_free()
 
-func place_object(object_name: String, grid_pos: Vector3, scale: Vector3):
+# Function to place objects randomly with rotation
+func place_objects_based_on_input():
+	var total_objects_placed = 0
+
+	# Loop through all objects to place
+	for object_name in user_objects.keys():
+		var object_data = user_objects[object_name]
+		var count = object_data[0]["count"]
+		var sizes = object_data[0]["sizes"]
+
+		# Place each object based on the count and sizes
+		for i in range(count):
+			var object_size = sizes[i % sizes.size()]  # Cycle through sizes if more objects than sizes
+			var success = false
+			# Try to place the object with one of the 4 rotations (randomly first, then others)
+			for attempt in range(100):  # Try 100 times
+				# Generate a random rotation
+				var rotation = get_random_rotation()
+				
+				# Try to place the object in the position with this rotation
+				for rotation_attempt in rotation:
+					var object_position = Vector3(randf_range((object_size.x / 2) + 1, length - (object_size.x / 2) + 1), 
+					(object_size.y / 2) + 1, randf_range((object_size.z / 2) + 1, width - (object_size.z / 2) + 1))
+					# The issue that shows up when placing a weirdly y scaled object comes from slight size differences in the base meshes
+					
+					# Apply the rotation to the object size for collision checks
+					var rotated_size = rotate_size(object_size, rotation_attempt)
+					
+					# Try to place the object with the rotated size
+					if valid_position(object_position, rotated_size):
+						place_object(object_name, object_position, rotated_size, rotation_attempt)
+						total_objects_placed += 1
+						success = true
+						break  # Break the loop if the object is successfully placed
+
+				if success:
+					break  # Break the outer loop if placement was successful
+
+			# If we couldn't place the object, print a message (optional)
+			if not success:
+				print("Failed to place object:", object_name)
+
+# Get a random rotation (0°, 90°, 180°, 270°)
+func get_random_rotation() -> Array:
+	var rotations = [0, 90, 180, 270]
+	rotations.shuffle()  # Shuffle the array in place
+	return rotations  # Return the shuffled array
+
+# Rotate the size of an object based on the angle
+func rotate_size(original_size: Vector3, rotation_angle: int) -> Vector3:
+	# Rotate the size of the object depending on the rotation angle
+	match rotation_angle:
+		0: return original_size
+		90: return Vector3(original_size.z, original_size.y, original_size.x)
+		180: return Vector3(original_size.x, original_size.y, original_size.z)
+		270: return Vector3(original_size.z, original_size.y, original_size.x)
+		_:
+			return original_size  # Return unmodified if angle is invalid
+
+# Update the place_object function to accept rotation
+func place_object(object_name: String, grid_pos: Vector3, scale: Vector3, rotation: int):
 	if not mesh_library.has(object_name):
 		print("Object name not found in library!")
 		return
@@ -62,48 +122,15 @@ func place_object(object_name: String, grid_pos: Vector3, scale: Vector3):
 	# Set the position
 	mesh_instance.position = grid_pos
 	
+	# Apply the rotation to the object
+	mesh_instance.rotation = Vector3(0, deg_to_rad(rotation), 0)
+	
 	# Add the object to the scene
 	add_child(mesh_instance)
 	
 	# Compute and store the transformed AABB
 	var transformed_aabb = get_scaled_aabb(mesh_instance)
 	placed_objects.append({"instance": mesh_instance, "aabb": transformed_aabb})
-
-
-# Function to place objects randomly
-func place_objects_based_on_input():
-	var total_objects_placed = 0
-
-	# Loop through all objects to place
-	for object_name in user_objects.keys():
-		var object_data = user_objects[object_name]
-		var count = object_data[0]["count"]
-		var sizes = object_data[0]["sizes"]
-
-		# Place each object based on the count and sizes
-		for i in range(count):
-			var object_size = sizes[i % sizes.size()]  # Cycle through sizes if more objects than sizes
-			var success = false
-			
-			# Try to place the object randomly until it is placed or we run out of attempts
-			for attempt in range(100):  # Try 100 times
-				# Generate a random position within the bounds of the room and object size
-				# Objects are placed from the center, so look for points in that range
-				var random_x = randf_range((object_size.x/2) + 1, length - (object_size.x/2) + 1)
-				var random_z = randf_range((object_size.z/2) + 1, width - (object_size.z/2) + 1)
-
-				# Generate the grid position
-				var object_position = Vector3(random_x, object_size.y, random_z)  
-				# Try to place the object at this position
-				if valid_position(object_position, object_size):
-					place_object(object_name, object_position, object_size)
-					total_objects_placed += 1
-					success = true
-					break  # Break the loop if the object is successfully placed
-
-			# If we couldn't place the object, print a message (optional)
-			if not success:
-				print("Failed to place object:", object_name)
 
 # Function to check if an object can be placed at a given position
 func valid_position(grid_pos : Vector3, scale : Vector3) -> bool:

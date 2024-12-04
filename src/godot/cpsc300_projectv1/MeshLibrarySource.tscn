@@ -25,6 +25,7 @@ albedo_color = Color(0.724643, 0.724643, 0.724643, 1)
 albedo_color = Color(0.19, 0.12331, 0.0418, 1)
 
 [node name="MeshLibrarySource" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000317574, 0.00182927, 0.00044775)
 
 [node name="floorTile" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.00106468, 0.999999, 0, -0.999999, -0.00106468, 0, 0, 0)
@@ -37,6 +38,7 @@ mesh = SubResource("BoxMesh_xa2nl")
 surface_material_override/0 = SubResource("StandardMaterial3D_ifcf8")
 
 [node name="bed" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00179434, -0.00175893, 0.000723958)
 mesh = ExtResource("2_e8y1f")
 surface_material_override/0 = SubResource("StandardMaterial3D_5s48m")
 
