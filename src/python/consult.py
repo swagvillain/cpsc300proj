@@ -8,7 +8,7 @@ import pandas as pd
 model_file_path = r"src/python/COMFE_model.pkl"
 with open(model_file_path, 'rb') as f:
     model = pickle.load(f)
-input_file_path  = r"src/python/query.txt"
+input_file_path  = r"src/godot/cpsc300_projectv1/query.txt"
 array = []
 
 if not os.path.isfile(input_file_path):
@@ -37,7 +37,7 @@ else:
     print(output_string)
 
     # Output
-    output_file_path = "src/python/consult_output.txt"
+    output_file_path = "src/godot/cpsc300_projectv1/consult_output.txt"
 
     output = open(output_file_path, 'w')
 
